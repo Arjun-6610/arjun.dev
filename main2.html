@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arjun · refined portfolio</title>
+  <!-- Google Fonts + Font Awesome 6 (free) -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&family=Space+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #0b0c15;
+      color: #f0f0ff;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #1e1e30; }
+    ::-webkit-scrollbar-thumb { background: #5a4aff; border-radius: 10px; }
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .content { position: relative; z-index: 5; }
+    @keyframes softGlow {
+      0% { text-shadow: 0 0 20px #5a4aff, 0 0 40px #ff3b9b; }
+      100% { text-shadow: 0 0 40px #00e0ff, 0 0 70px #5a4aff; }
+    }
+    .glow-title { animation: softGlow 3s infinite alternate; }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-18px); }
+      100% { transform: translateY(0px); }
+    }
+    .float-img { animation: float 5s ease-in-out infinite; }
+    .skill-fill {
+      height: 10px;
+      background: linear-gradient(90deg, #5a4aff, #ff3b9b, #00e0ff);
+      width: 0%;
+      border-radius: 20px;
+      transition: width 1.2s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+      box-shadow: 0 0 15px #5a4aff;
+    }
+    .project-card {
+      transition: transform 0.3s, box-shadow 0.3s;
+      transform-style: preserve-3d;
+      perspective: 1000px;
+      border: 1px solid rgba(90, 74, 255, 0.3);
+      background: rgba(20, 15, 40, 0.4);
+      backdrop-filter: blur(8px);
+      width: 320px;
+      padding: 30px;
+      border-radius: 30px;
+    }
+    .project-card:hover {
+      transform: translateY(-15px) scale(1.02) rotateX(1deg) rotateY(2deg);
+      box-shadow: 0 30px 40px rgba(90, 74, 255, 0.5);
+      border-color: #ff3b9b;
+    }
+    .orbit-wrapper {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      margin: auto;
+      animation: spin-slow 20s linear infinite;
+    }
+    .orbit-wrapper .orbit-item {
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      top: 50%;
+      left: 50%;
+      margin: -35px 0 0 -35px;
+      animation: spin-slow-reverse 20s linear infinite;
+      background: rgba(10, 8, 20, 0.6);
+      backdrop-filter: blur(6px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 30px currentColor;
+    }
+    .item1 { transform: rotate(0deg) translate(150px) rotate(0deg); color: #5a4aff; }
+    .item2 { transform: rotate(90deg) translate(150px) rotate(-90deg); color: #ff3b9b; }
+    .item3 { transform: rotate(180deg) translate(150px) rotate(-180deg); color: #00e0ff; }
+    .item4 { transform: rotate(270deg) translate(150px) rotate(-270deg); color: #ffb86b; }
+    @keyframes spin-slow { to { transform: rotate(360deg); } }
+    @keyframes spin-slow-reverse { to { transform: rotate(-360deg); } }
+    .orbit-center {
+      width: 130px;
+      height: 130px;
+      background: radial-gradient(circle at 30% 30%, #5a4aff, #ff3b9b);
+      border-radius: 50%;
+      box-shadow: 0 0 60px #5a4aff;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    #terminal {
+      background: #0a0a14;
+      border: 2px solid #5a4aff;
+      box-shadow: 0 0 40px #5a4aff, 0 0 10px #ff3b9b;
+      font-family: 'Space Mono', monospace;
+      white-space: pre-wrap;
+      color: #aaf0ff;
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 800px;
+      margin: auto;
+      min-height: 250px;
+      font-size: 16px;
+    }
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      height: 1.2em;
+      background: #ff3b9b;
+      vertical-align: middle;
+      margin-left: 4px;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{ opacity:1; } 50%{ opacity:0; } }
+    .navbar {
+      background: rgba(8, 6, 18, 0.7);
+      backdrop-filter: blur(15px);
+      border-bottom: 1px solid rgba(90, 74, 255, 0.3);
+      position: fixed;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 8%;
+      z-index: 1000;
+    }
+    .stat-number { font-size: 3rem; font-weight: 800; background: linear-gradient(135deg,#5a4aff,#ff3b9b); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    #back2top {
+      position: fixed; bottom: 30px; right: 30px; background: #5a4aff; width: 50px; height: 50px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 24px; cursor: pointer; z-index: 999; opacity: 0; transition: 0.3s;
+      box-shadow: 0 0 30px #ff3b9b; border: none;
+    }
+    #back2top.show { opacity: 1; }
+    .btn-primary {
+      background: linear-gradient(45deg, #5a4aff, #ff3b9b);
+      border: none; color: white; font-weight: 600;
+      box-shadow: 0 0 20px #5a4aff;
+      padding: 14px 40px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn-outline {
+      border: 2px solid #5a4aff; background: transparent; color: white;
+      padding: 14px 40px;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn-outline:hover { background: #5a4aff; color: white; }
+    .contact-card {
+      background: rgba(30, 20, 50, 0.3);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(90, 74, 255, 0.4);
+      transition: 0.3s;
+      width: 220px;
+      padding: 30px;
+      border-radius: 30px;
+      text-decoration: none;
+      color: white;
+      text-align: center;
+    }
+    .contact-card:hover {
+      background: #5a4aff;
+      border-color: #ff3b9b;
+      transform: scale(1.05);
+    }
+    footer {
+      text-align: center;
+      padding: 30px;
+      background: #000;
+      border-top: 1px solid #5a4aff;
+    }
+    a { text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<!-- particles background -->
+<div id="particles-js"></div>
+
+<!-- back to top -->
+<div id="back2top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></div>
+
+<div class="content">
+
+<!-- NAV -->
+<div class="navbar">
+  <h2 style="margin:0; background:linear-gradient(45deg,#5a4aff,#ff3b9b,#00e0ff); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:800;">Arjun.dev</h2>
+  <div>
+    <a href="#home" style="margin:0 15px; color:#f0f0ff; font-weight:500;">Home</a>
+    <a href="#skills" style="margin:0 15px; color:#f0f0ff;">Skills</a>
+    <a href="#projects" style="margin:0 15px; color:#f0f0ff;">Projects</a>
+    <a href="#contact" style="margin:0 15px; color:#f0f0ff;">Contact</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<div id="home" style="min-height:100vh; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; padding:120px 8%;">
+  <div style="flex:1; min-width:300px;">
+    <h1 class="glow-title" style="font-size:clamp(45px,9vw,100px); font-weight:800; line-height:1.1; background:linear-gradient(120deg,#5a4aff,#ff3b9b,#00e0ff); -webkit-background-clip:text; background-clip:text; color:transparent; margin:0;">Creative Web Developer</h1>
+    <div style="height: 80px; margin: 15px 0;">
+      <h3 id="type" style="color:#b0b0ff; font-size:28px; font-weight:300;"></h3>
+    </div>
+    <div style="display:flex; gap:20px; flex-wrap:wrap;">
+      <button class="btn-primary" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">View projects <i class="fas fa-arrow-right"></i></button>
+      <a href="#contact"><button class="btn-outline" onmouseover="this.style.background='#5a4aff'; this.style.color='#fff'" onmouseout="this.style.background='transparent'; this.style.color='white'">Let's talk</button></a>
+    </div>
+    <!-- mini stats -->
+    <div style="display:flex; gap:40px; margin-top:50px;">
+      <div><span class="stat-number" data-target="15">0</span><span style="color:#ff3b9b;">+</span><p style="color:#aaa;">Projects</p></div>
+      <div><span class="stat-number" data-target="8">0</span><span style="color:#ff3b9b;">+</span><p style="color:#aaa;">Clients</p></div>
+      <div><span class="stat-number" data-target="3">0</span><span style="color:#ff3b9b;">y</span><p style="color:#aaa;">Experience</p></div>
+    </div>
+  </div>
+  <!-- profile photo with 3d tilt -->
+  <div style="flex:1; min-width:300px; text-align:center;" id="tilt-area">
+    <img src="IMG_20260218_075751_016.webp" id="profilePic" style="width:350px; border-radius:30% 70% 70% 30% / 30% 30% 70% 70%; border:4px solid #5a4aff; box-shadow:0 0 70px #ff3b9b; transition:transform 0.1s;" class="float-img" alt="Arjun">
+  </div>
+</div>
+
+<!-- ABOUT short -->
+<div style="padding:60px 8%; text-align:center; background:rgba(10,8,25,0.5); backdrop-filter:blur(5px);">
+  <h2 style="font-size:40px;"><span style="color:#5a4aff;">&lt;</span> About me <span style="color:#ff3b9b;">/&gt;</span></h2>
+  <p style="max-width:700px; margin:30px auto; color:#ccc; font-size:18px;">I'm Arjun Sedai, founder of <strong style="color:#00e0ff;">SiteVibe & EcoCollege</strong>. I build digital experiences that are fast, animated, and user-centric. From C programming to React, I merge logic with design.</p>
+</div>
+
+<!-- SKILLS -->
+<div id="skills" style="padding:100px 8%;">
+  <h2 style="text-align:center; font-size:48px; margin-bottom:60px;">Skills <i class="fas fa-code" style="color:#5a4aff;"></i></h2>
+  <div style="max-width:700px; margin:auto;">
+    <div style="margin-bottom:30px;"><span style="display:flex; justify-content:space-between;"><span><i class="fab fa-html5" style="color:#ff5e4a;"></i> HTML & CSS</span> <span id="perc1">0%</span></span><div style="background:#2a2a40; height:10px; border-radius:20px;"><div class="skill-fill" id="bar1" data-width="92"></div></div></div>
+    <div style="margin-bottom:30px;"><span style="display:flex; justify-content:space-between;"><span><i class="fab fa-js" style="color:#f7df1e;"></i> JavaScript</span> <span id="perc2">0%</span></span><div style="background:#2a2a40; height:10px; border-radius:20px;"><div class="skill-fill" id="bar2" data-width="78"></div></div></div>
+    <div style="margin-bottom:30px;"><span style="display:flex; justify-content:space-between;"><span><i class="fab fa-python" style="color:#3776ab;"></i> Python</span> <span id="perc3">0%</span></span><div style="background:#2a2a40; height:10px; border-radius:20px;"><div class="skill-fill" id="bar3" data-width="85"></div></div></div>
+    <div style="margin-bottom:30px;"><span style="display:flex; justify-content:space-between;"><span><i class="fas fa-code" style="color:#5a4aff;"></i> C (pointers, files)</span> <span id="perc4">0%</span></span><div style="background:#2a2a40; height:10px; border-radius:20px;"><div class="skill-fill" id="bar4" data-width="88"></div></div></div>
+    <p style="color:#aaa; margin-top:30px;">Data structures · Algorithms · Embedded basics · Problem solving</p>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<div id="projects" style="padding:80px 8%; background:radial-gradient(circle at 20% 30%, #1c1a2f, #0a0a18);">
+  <h2 style="font-size:48px; text-align:center;">Major Projects</h2>
+  <p style="color:#aaa; text-align:center; margin-bottom:60px;">each line of code tells a story</p>
+  <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:40px;">
+    <!-- grateful security - FIXED ICON (shield-alt) -->
+    <div class="project-card">
+      <i class="fas fa-shield-alt" style="font-size:50px; color:#5a4aff; margin-bottom:20px;"></i>
+      <h3 style="color:#5a4aff;">Grateful Security</h3>
+      <p style="color:#ccc;">Corporate website & digital branding for security firm. Clients: banks, hydropower.</p>
+      <div style="margin-top:20px;"><span style="background:#5a4aff22; padding:5px 15px; border-radius:40px;">branding</span> <span style="background:#ff3b9b22; padding:5px 15px; border-radius:40px;">UI/UX</span></div>
+    </div>
+    <!-- SiteVibe -->
+    <div class="project-card">
+      <i class="fas fa-bolt" style="font-size:50px; color:#ff3b9b; margin-bottom:20px;"></i>
+      <h3 style="color:#ff3b9b;">Founder of SiteVibe</h3>
+      <p style="color:#ccc;">Modern website brand — stylish, animated, fully responsive. Multi-page with CMS.</p>
+      <div style="margin-top:20px;"><span style="background:#00e0ff22; padding:5px 15px;">React</span> <span style="background:#ff3b9b22; padding:5px 15px;">Next.js</span></div>
+    </div>
+    <!-- Eco College -->
+    <div class="project-card">
+      <i class="fas fa-graduation-cap" style="font-size:50px; color:#00e0ff; margin-bottom:20px;"></i>
+      <h3 style="color:#00e0ff;">Eco College</h3>
+      <p style="color:#ccc;">Educational platform with student portal & modern UI. CMS integrated.</p>
+      <div style="margin-top:20px;"><span style="background:#00e0ff22; padding:5px 15px;">Django</span> <span style="background:#5a4aff22; padding:5px 15px;">Bootstrap</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- TECH ORBIT -->
+<div style="padding:120px 8%; text-align:center;">
+  <h2 style="font-size:48px;">Tech Orbit</h2>
+  <div style="margin-top:60px; display:flex; justify-content:center;">
+    <div class="orbit-wrapper">
+      <div class="orbit-item item1"><img src="https://cdn-icons-png.flaticon.com/512/6132/6132222.png" style="width:60px;" title="C"></div>
+      <div class="orbit-item item2"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968350.png" style="width:60px;" title="Python"></div>
+      <div class="orbit-item item3"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968292.png" style="width:60px;" title="JavaScript"></div>
+      <div class="orbit-item item4"><img src="https://cdn-icons-png.flaticon.com/512/919/919851.png" style="width:60px;" title="React"></div>
+      <div class="orbit-center"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TERMINAL -->
+<div style="padding:80px 8%; background:#0a0a14;">
+  <h2 style="color:white; text-align:center; margin-bottom:40px; font-family:'Space Mono',monospace;">C terminal <i class="fas fa-terminal" style="color:#ff3b9b;"></i></h2>
+  <div id="terminal"></div>
+</div>
+
+<!-- CONTACT -->
+<div id="contact" style="padding:100px 8%; background:linear-gradient(145deg,#0f0c1a,#040210);">
+  <h2 style="font-size:48px; text-align:center;">Let's connect</h2>
+  <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:30px; margin:70px 0;">
+    <a href="https://www.facebook.com/arjun.sedai.902" target="_blank" class="contact-card"><i class="fab fa-facebook" style="font-size:50px;"></i><h3>Facebook</h3></a>
+    <a href="https://www.instagram.com/sedaiarjun" target="_blank" class="contact-card"><i class="fab fa-instagram" style="font-size:50px;"></i><h3>Instagram</h3></a>
+    <a href="tel:+9779768902017" class="contact-card"><i class="fas fa-phone-alt" style="font-size:50px;"></i><h3>Call Me</h3><p>+977 9768902017</p></a>
+  </div>
+</div>
+
+<!-- footer -->
+<footer>
+  © Arjun Sedai · All Rights Reserved · <span id="year"></span>
+</footer>
+
+</div> <!-- end content -->
+
+<!-- particles library -->
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script>
+  // particles with refined colors
+  particlesJS("particles-js", {
+    particles: {
+      number: { value: 90, density: { enable: true, value_area: 800 } },
+      color: { value: ["#5a4aff", "#ff3b9b", "#00e0ff", "#ffb86b"] },
+      shape: { type: "circle" },
+      opacity: { value: 0.5, random: true },
+      size: { value: 3, random: true },
+      line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.15, width: 1 },
+      move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out" }
+    },
+    interactivity: {
+      detect_on: "canvas",
+      events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" } }
+    }
+  });
+
+  // typewriter effect
+  let text = ["full-stack developer", "C programmer", "founder of SiteVibe", "UI animator"];
+  let i = 0, j = 0, isDeleting = false, currentText = "";
+  function typeEffect() {
+    document.getElementById("type").innerHTML = currentText + '<span class="cursor"></span>';
+    if (!isDeleting && j < text[i].length) currentText += text[i][j++];
+    else if (isDeleting && j > 0) currentText = currentText.slice(0, --j);
+    else { isDeleting = !isDeleting; if (!isDeleting) i = (i+1) % text.length; }
+    setTimeout(typeEffect, isDeleting ? 60 : 120);
+  }
+  typeEffect();
+
+  // skill bars + counters on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        document.querySelectorAll('.skill-fill').forEach((bar, idx) => {
+          let w = bar.dataset.width || 90;
+          bar.style.width = w + '%';
+          document.getElementById(`perc${idx+1}`).innerText = w + '%';
+        });
+        document.querySelectorAll('.stat-number').forEach(counter => {
+          let target = +counter.dataset.target;
+          let update = () => {
+            let val = +counter.innerText;
+            if (val < target) { counter.innerText = val + 1; setTimeout(update, 30); }
+          };
+          update();
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+  observer.observe(document.getElementById('skills'));
+
+  // back to top
+  window.addEventListener('scroll', ()=>{
+    document.getElementById('back2top').classList.toggle('show', window.scrollY > 500);
+  });
+
+  // terminal simulation
+  let term = document.getElementById('terminal');
+  let code = `#include <stdio.h>\n\nint main() {\n    printf("Arjun.dev :: build initiated\\n");\n    for(int i=0;i<3;i++) {\n        printf("module %d loaded\\n", i);\n    }\n    return 0;\n}\n\n> Compiling...\n> Linking libraries...\n> Done. (0 errors, 0 warnings)`;
+  let idx = 0;
+  function typeTerminal() {
+    if (idx < code.length) {
+      term.innerHTML += code.charAt(idx);
+      idx++;
+      setTimeout(typeTerminal, 30);
+    } else {
+      term.innerHTML += '\n\n<span style="color:#5a4aff;">✅ Execution successful. Hello, Arjun.</span>';
+    }
+  }
+  typeTerminal();
+
+  // 3D tilt on profile pic
+  let tilt = document.getElementById('tilt-area');
+  let pic = document.getElementById('profilePic');
+  tilt.addEventListener('mousemove', (e) => {
+    let rect = tilt.getBoundingClientRect();
+    let x = e.clientX - rect.left;
+    let y = e.clientY - rect.top;
+    let centerX = rect.width/2, centerY = rect.height/2;
+    let rotX = (y - centerY)/20;
+    let rotY = (centerX - x)/20;
+    pic.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.02)`;
+  });
+  tilt.addEventListener('mouseleave', () => pic.style.transform = 'rotateX(0) rotateY(0) scale(1)');
+
+  // year
+  document.getElementById('year').innerText = new Date().getFullYear();
+</script>
+</body>
+</html>
